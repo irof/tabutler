@@ -1,7 +1,7 @@
 let sweepButton = document.getElementById("sweep");
 sweepButton.onclick = function () {
     chrome.tabs.query({}, function (tabs) {
-        let remove_urls = ["chrome://newtab/"];
+        const remove_urls = ["chrome://newtab/"];
 
         for (let tab of tabs) {
             if (remove_urls.includes(tab.url)) {
