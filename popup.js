@@ -18,8 +18,9 @@ orderlyButton.onclick = function () {
         tabs.sort(function (a, b) {
             return a.url >= b.url ? 1 : -1;
         });
-        for (let i in tabs) {
-            chrome.tabs.move(tabs[i].id, {index: parseInt(i)});
+        const numberOfTabs = tabs.length;
+        for (let i = 0; i < numberOfTabs; i++) {
+            chrome.tabs.move(tabs[i].id, {index: i});
         }
     });
 };
