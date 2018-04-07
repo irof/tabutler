@@ -14,13 +14,14 @@ sweepButton.onclick = function () {
 
 let orderlyButton = document.getElementById("orderly");
 orderlyButton.onclick = function () {
-    chrome.tabs.query({}, function (tabs) {
+    chrome.tabs.query({pinned: false}, function (tabs) {
+        const indexes = tabs.map(tab => tab.index);
         tabs.sort(function (a, b) {
             return a.url >= b.url ? 1 : -1;
         });
         const numberOfTabs = tabs.length;
         for (let i = 0; i < numberOfTabs; i++) {
-            chrome.tabs.move(tabs[i].id, {index: i});
+            chrome.tabs.move(tabs[i].id, {index: indexes[i]});
         }
     });
 };
