@@ -26,4 +26,12 @@ orderlyButton.onclick = function () {
     });
 };
 
-
+document.getElementById("merge").onclick = function () {
+    chrome.windows.getCurrent({windowTypes: ["normal"]}, window => {
+        chrome.tabs.query({}, function(tabs) {
+            tabs.forEach(tab => {
+                chrome.tabs.move(tab.id, {windowId: window.id, index: tab.index});
+            });
+        });
+    });
+};
