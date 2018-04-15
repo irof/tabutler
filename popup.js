@@ -37,7 +37,7 @@ document.getElementById("merge").onclick = function () {
 };
 
 document.getElementById("remove-parent-and-child").onclick = function () {
-    chrome.tabs.query({'active': true}, function(tabs) {
+    chrome.tabs.query({"active": true}, function(tabs) {
         let tab = tabs[0];
         chrome.tabs.remove(tab.id);
         if (tab.openerTabId) {
