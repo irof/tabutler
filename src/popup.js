@@ -63,8 +63,11 @@ document.getElementById("command_close").onclick = function () {
 
 document.getElementById("remove-parent-and-child").onclick = function () {
     chrome.tabs.query({'active': true}, function(tabs) {
-        var tab = tabs[0];
-        alert(tab.id + '/' + tab.openerTabId);
+        let tab = tabs[0];
+        chrome.tabs.remove(tab.id);
+        if (tab.openerTabId) {
+            chrome.tabs.remove(tab.openerTabId);
+        }
     });
 };
 
