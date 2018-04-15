@@ -60,3 +60,11 @@ document.getElementById("command_close").onclick = function () {
         .filter(tab_id_checkbox => tab_id_checkbox.checked)
         .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
 };
+
+document.getElementById("remove-parent-and-child").onclick = function () {
+    chrome.tabs.query({'active': true}, function(tabs) {
+        var tab = tabs[0];
+        alert(tab.id + '/' + tab.openerTabId);
+    });
+};
+
