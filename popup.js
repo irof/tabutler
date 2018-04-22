@@ -37,12 +37,43 @@ document.getElementById("merge").onclick = function () {
 };
 
 document.getElementById("remove-parent-and-child").onclick = function () {
-    chrome.tabs.query({"active": true}, function(tabs) {
-        let tab = tabs[0];
-        chrome.tabs.remove(tab.id);
-        if (tab.openerTabId) {
-            chrome.tabs.remove(tab.openerTabId);
+    var childrenMap = new Map();
+    
+    var getRootId = function(id) {
+        chrome.tabs.get(id, function(tab) {
+            let rootId = id;
+            let parent = tab.openerTabId;
+            if (parent) {
+                rootId = getRootId(parent);
+            }
+            removeChildren(rootId);
+        });
+    };
+
+    var removeChildren = function(id) {
+        chrome.tabs.remove(id);
+        let children = childrenMap.get(id);
+        if (children) {
+            children.forEach(childId => {
+                removeChildren(childId);
+            });
         }
+        return;
+    };
+
+    chrome.tabs.query({}, function(tabs) {
+        tabs.forEach(tab => {
+            let children = childrenMap.get(tab.openerTabId);
+            if (!children) {
+                children = new Array();
+                childrenMap.set(tab.openerTabId, children);
+            }
+            children.push(tab.id);
+        });
+    });
+
+    chrome.tabs.query({"active": true}, function(tabs) {
+        getRootId(tabs[0].id);
     });
 };
 
