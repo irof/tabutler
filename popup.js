@@ -37,17 +37,16 @@ document.getElementById("merge").onclick = function () {
 };
 
 document.getElementById("remove-parent-and-child").onclick = function () {
+
+    var tabMap = new Map();
     var childrenMap = new Map();
-    
+
     var getRootId = function(id) {
-        chrome.tabs.get(id, function(tab) {
-            let rootId = id;
-            let parent = tab.openerTabId;
-            if (parent) {
-                rootId = getRootId(parent);
-            }
-            removeChildren(rootId);
-        });
+        let openerId = tabMap.get(id);
+        if (!openerId) {
+            return id;
+        }
+        return getRootId(openerId);
     };
 
     var removeChildren = function(id) {
@@ -58,11 +57,11 @@ document.getElementById("remove-parent-and-child").onclick = function () {
                 removeChildren(childId);
             });
         }
-        return;
     };
 
     chrome.tabs.query({}, function(tabs) {
         tabs.forEach(tab => {
+            tabMap.set(tab.id, tab.openerTabId);
             let children = childrenMap.get(tab.openerTabId);
             if (!children) {
                 children = new Array();
@@ -73,7 +72,8 @@ document.getElementById("remove-parent-and-child").onclick = function () {
     });
 
     chrome.tabs.query({"active": true}, function(tabs) {
-        getRootId(tabs[0].id);
+        let rootId = getRootId(tabs[0].id);
+        removeChildren(rootId);
     });
 };
 
