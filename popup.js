@@ -41,14 +41,6 @@ document.getElementById("remove-parent-and-child").onclick = function () {
     var tabMap = new Map();
     var childrenMap = new Map();
 
-    var getRootId = function(id) {
-        let openerId = tabMap.get(id);
-        if (!openerId) {
-            return id;
-        }
-        return getRootId(openerId);
-    };
-
     var removeChildren = function(id) {
         chrome.tabs.remove(id);
         let children = childrenMap.get(id);
@@ -72,8 +64,15 @@ document.getElementById("remove-parent-and-child").onclick = function () {
     });
 
     chrome.tabs.query({"active": true}, function(tabs) {
-        let rootId = getRootId(tabs[0].id);
-        removeChildren(rootId);
+        let id = tabs[0].id;
+        while(id) {
+            let openerId = tabMap.get(id);
+            if (!openerId) {
+                break;
+            }
+            id = openerId;
+        }
+        removeChildren(id);
     });
 };
 
