@@ -35,3 +35,24 @@ document.getElementById("merge").onclick = function () {
         });
     });
 };
+
+const tab_list = document.getElementById("tab_list");
+
+chrome.tabs.query({pinned: false}, function (tabs) {
+    tabs.forEach(tab => {
+        const line = document.createElement("li");
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "tab_id";
+        checkbox.value = tab.id;
+        checkbox.id = "tabid_" + tab.id;
+
+        const label = document.createElement('label');
+        label.htmlFor = checkbox.id;
+        label.appendChild(document.createTextNode(tab.title));
+
+        line.appendChild(checkbox);
+        line.appendChild(label);
+        tab_list.appendChild(line);
+    });
+});
