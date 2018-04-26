@@ -1,6 +1,5 @@
-let sweepButton = document.getElementById("sweep");
-sweepButton.onclick = function () {
-    chrome.tabs.query({}, function (tabs) {
+document.getElementById("sweep").onclick = function () {
+    chrome.tabs.query({}, tabs => {
         const remove_urls = ["chrome://newtab/"];
 
         for (let tab of tabs) {
@@ -12,13 +11,10 @@ sweepButton.onclick = function () {
     });
 };
 
-let orderlyButton = document.getElementById("orderly");
-orderlyButton.onclick = function () {
-    chrome.tabs.query({ pinned: false }, function (tabs) {
+document.getElementById("orderly").onclick = function () {
+    chrome.tabs.query({ pinned: false }, tabs => {
         const indexes = tabs.map(tab => tab.index);
-        tabs.sort(function (a, b) {
-            return a.url >= b.url ? 1 : -1;
-        });
+        tabs.sort((a, b) => a.url >= b.url ? 1 : -1);
         const numberOfTabs = tabs.length;
         for (let i = 0; i < numberOfTabs; i++) {
             chrome.tabs.move(tabs[i].id, { index: indexes[i] });
@@ -36,8 +32,7 @@ document.getElementById("merge").onclick = function () {
     });
 };
 
-
-chrome.tabs.query({ pinned: false }, function (tabs) {
+chrome.tabs.query({ pinned: false }, tabs => {
     const tab_list = document.getElementById("tab_list");
     tabs.forEach(tab => {
         const line = document.createElement("li");
