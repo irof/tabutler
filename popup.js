@@ -14,23 +14,23 @@ sweepButton.onclick = function () {
 
 let orderlyButton = document.getElementById("orderly");
 orderlyButton.onclick = function () {
-    chrome.tabs.query({pinned: false}, function (tabs) {
+    chrome.tabs.query({ pinned: false }, function (tabs) {
         const indexes = tabs.map(tab => tab.index);
         tabs.sort(function (a, b) {
             return a.url >= b.url ? 1 : -1;
         });
         const numberOfTabs = tabs.length;
         for (let i = 0; i < numberOfTabs; i++) {
-            chrome.tabs.move(tabs[i].id, {index: indexes[i]});
+            chrome.tabs.move(tabs[i].id, { index: indexes[i] });
         }
     });
 };
 
 document.getElementById("merge").onclick = function () {
-    chrome.windows.getCurrent({windowTypes: ["normal"]}, window => {
-        chrome.tabs.query({}, function(tabs) {
+    chrome.windows.getCurrent({ windowTypes: ["normal"] }, window => {
+        chrome.tabs.query({}, function (tabs) {
             tabs.forEach(tab => {
-                chrome.tabs.move(tab.id, {windowId: window.id, index: tab.index});
+                chrome.tabs.move(tab.id, { windowId: window.id, index: tab.index });
             });
         });
     });
@@ -38,7 +38,7 @@ document.getElementById("merge").onclick = function () {
 
 const tab_list = document.getElementById("tab_list");
 
-chrome.tabs.query({pinned: false}, function (tabs) {
+chrome.tabs.query({ pinned: false }, function (tabs) {
     tabs.forEach(tab => {
         const line = document.createElement("li");
         const checkbox = document.createElement("input");
@@ -56,3 +56,11 @@ chrome.tabs.query({pinned: false}, function (tabs) {
         tab_list.appendChild(line);
     });
 });
+
+document.getElementById("command_close").onclick = function () {
+    chrome.tabs.query({}, function (tabs) {
+        [...document.getElementsByName("tab_id")]
+            .filter(tab_id_checkbox => tab_id_checkbox.checked)
+            .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
+    });
+};
