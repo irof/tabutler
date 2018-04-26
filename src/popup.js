@@ -36,9 +36,9 @@ document.getElementById("merge").onclick = function () {
     });
 };
 
-const tab_list = document.getElementById("tab_list");
 
 chrome.tabs.query({ pinned: false }, function (tabs) {
+    const tab_list = document.getElementById("tab_list");
     tabs.forEach(tab => {
         const line = document.createElement("li");
         const checkbox = document.createElement("input");
