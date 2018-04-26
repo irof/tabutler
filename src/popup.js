@@ -47,7 +47,7 @@ chrome.tabs.query({ pinned: false }, function (tabs) {
         checkbox.value = tab.id;
         checkbox.id = "tabid_" + tab.id;
 
-        const label = document.createElement('label');
+        const label = document.createElement("label");
         label.htmlFor = checkbox.id;
         label.appendChild(document.createTextNode(tab.title));
 
@@ -58,9 +58,7 @@ chrome.tabs.query({ pinned: false }, function (tabs) {
 });
 
 document.getElementById("command_close").onclick = function () {
-    chrome.tabs.query({}, function (tabs) {
-        [...document.getElementsByName("tab_id")]
-            .filter(tab_id_checkbox => tab_id_checkbox.checked)
-            .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
-    });
+    [...document.getElementsByName("tab_id")]
+        .filter(tab_id_checkbox => tab_id_checkbox.checked)
+        .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
 };
