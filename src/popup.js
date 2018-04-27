@@ -32,25 +32,28 @@ document.getElementById("merge").onclick = function () {
     });
 };
 
-chrome.tabs.query({ pinned: false }, tabs => {
-    const tab_list = document.getElementById("tab_list");
-    tabs.forEach(tab => {
-        const line = document.createElement("li");
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.name = "tab_id";
-        checkbox.value = tab.id;
-        checkbox.id = "tabid_" + tab.id;
+document.getElementById("load_tabs").onclick = () => {
+    chrome.tabs.query({ pinned: false }, tabs => {
+        const tab_list = document.getElementById("tab_list");
+        [...tab_list.children].forEach(child => child.remove());
+        tabs.forEach(tab => {
+            const line = document.createElement("li");
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.name = "tab_id";
+            checkbox.value = tab.id;
+            checkbox.id = "tabid_" + tab.id;
 
-        const label = document.createElement("label");
-        label.htmlFor = checkbox.id;
-        label.appendChild(document.createTextNode(tab.title));
+            const label = document.createElement("label");
+            label.htmlFor = checkbox.id;
+            label.appendChild(document.createTextNode(tab.title));
 
-        line.appendChild(checkbox);
-        line.appendChild(label);
-        tab_list.appendChild(line);
+            line.appendChild(checkbox);
+            line.appendChild(label);
+            tab_list.appendChild(line);
+        });
     });
-});
+};
 
 document.getElementById("command_close").onclick = function () {
     [...document.getElementsByName("tab_id")]
