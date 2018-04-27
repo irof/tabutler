@@ -62,12 +62,42 @@ document.getElementById("command_close").onclick = function () {
 };
 
 document.getElementById("remove-parent-and-child").onclick = function () {
-    chrome.tabs.query({'active': true}, function(tabs) {
-        let tab = tabs[0];
-        chrome.tabs.remove(tab.id);
-        if (tab.openerTabId) {
-            chrome.tabs.remove(tab.openerTabId);
+
+    var tabMap = new Map();
+    var childrenMap = new Map();
+
+    var removeChildren = function(id) {
+        chrome.tabs.remove(id);
+        let children = childrenMap.get(id);
+        if (children) {
+            children.forEach(childId => {
+                removeChildren(childId);
+            });
         }
+    };
+
+    chrome.tabs.query({}, function(tabs) {
+        tabs.forEach(tab => {
+            tabMap.set(tab.id, tab.openerTabId);
+            let children = childrenMap.get(tab.openerTabId);
+            if (!children) {
+                children = new Array();
+                childrenMap.set(tab.openerTabId, children);
+            }
+            children.push(tab.id);
+        });
+    });
+
+    chrome.tabs.query({"active": true}, function(tabs) {
+        let id = tabs[0].id;
+        while(id) {
+            let openerId = tabMap.get(id);
+            if (!openerId) {
+                break;
+            }
+            id = openerId;
+        }
+        removeChildren(id);
     });
 };
 
