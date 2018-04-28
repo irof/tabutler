@@ -6,8 +6,12 @@
   "icons": {
     "128": "icons/tabutler128.png"
   },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
   "browser_action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["tabs"]
+  "permissions": ["tabs", "storage"]
 }
