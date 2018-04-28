@@ -33,7 +33,7 @@ document.getElementById("merge").onclick = function () {
 };
 
 document.getElementById("load_tabs").onclick = () => {
-    chrome.tabs.query({ pinned: false }, tabs => {
+    chrome.tabs.query({ pinned: false, currentWindow: true }, tabs => {
         const tab_list = document.getElementById("tab_list");
         [...tab_list.children].forEach(child => child.remove());
         tabs.forEach(tab => {
