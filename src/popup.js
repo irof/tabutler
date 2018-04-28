@@ -12,7 +12,7 @@ document.getElementById("sweep").onclick = function () {
 };
 
 document.getElementById("orderly").onclick = function () {
-    chrome.tabs.query({ pinned: false }, tabs => {
+    chrome.tabs.query({ pinned: false, currentWindow: true }, tabs => {
         const indexes = tabs.map(tab => tab.index);
         tabs.sort((a, b) => a.url >= b.url ? 1 : -1);
         const numberOfTabs = tabs.length;
