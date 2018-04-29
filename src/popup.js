@@ -38,15 +38,16 @@ document.getElementById("load_tabs").onclick = () => {
         [...tab_list.children].forEach(child => child.remove());
         tabs.forEach(tab => {
             const line = document.createElement("li");
+
             const checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.name = "tab_id";
             checkbox.value = tab.id;
             checkbox.id = "tabid_" + tab.id;
+            line.appendChild(checkbox);
 
             const label = document.createElement("label");
             label.htmlFor = checkbox.id;
-
             if (tab.favIconUrl) {
                 const favIconImg = document.createElement("img");
                 favIconImg.src = tab.favIconUrl;
@@ -54,13 +55,18 @@ document.getElementById("load_tabs").onclick = () => {
                 favIconImg.height = 16;
                 label.appendChild(favIconImg);
             }
-
             const labelText = document.createElement("span");
             labelText.appendChild(document.createTextNode(tab.title));
             label.appendChild(labelText);
-
-            line.appendChild(checkbox);
             line.appendChild(label);
+
+            const arrowIcon = document.createElement("i");
+            arrowIcon.className = "fas fa-arrow-circle-right";
+            arrowIcon.onclick = () => {
+                chrome.tabs.highlight({ tabs: tab.index });
+            };
+            line.appendChild(arrowIcon)
+
             tab_list.appendChild(line);
         });
     });
