@@ -46,7 +46,18 @@ document.getElementById("load_tabs").onclick = () => {
 
             const label = document.createElement("label");
             label.htmlFor = checkbox.id;
-            label.appendChild(document.createTextNode(tab.title));
+
+            if (tab.favIconUrl) {
+                const favIconImg = document.createElement("img");
+                favIconImg.src = tab.favIconUrl;
+                favIconImg.width = 16;
+                favIconImg.height = 16;
+                label.appendChild(favIconImg);
+            }
+
+            const labelText = document.createElement("span");
+            labelText.appendChild(document.createTextNode(tab.title));
+            label.appendChild(labelText);
 
             line.appendChild(checkbox);
             line.appendChild(label);
