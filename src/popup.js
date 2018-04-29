@@ -1,4 +1,4 @@
-document.getElementById("sweep").onclick = function () {
+document.getElementById("sweep").onclick = () => {
     chrome.tabs.query({}, tabs => {
         const remove_urls = ["chrome://newtab/"];
 
@@ -11,7 +11,7 @@ document.getElementById("sweep").onclick = function () {
     });
 };
 
-document.getElementById("orderly").onclick = function () {
+document.getElementById("orderly").onclick = () => {
     chrome.tabs.query({ pinned: false, currentWindow: true }, tabs => {
         const indexes = tabs.map(tab => tab.index);
         tabs.sort((a, b) => a.url >= b.url ? 1 : -1);
@@ -22,9 +22,9 @@ document.getElementById("orderly").onclick = function () {
     });
 };
 
-document.getElementById("merge").onclick = function () {
+document.getElementById("merge").onclick = () => {
     chrome.windows.getCurrent({ windowTypes: ["normal"] }, window => {
-        chrome.tabs.query({}, function (tabs) {
+        chrome.tabs.query({}, tabs => {
             tabs.forEach(tab => {
                 chrome.tabs.move(tab.id, { windowId: window.id, index: tab.index });
             });
@@ -72,12 +72,12 @@ document.getElementById("load_tabs").onclick = () => {
     });
 };
 
-document.getElementById("command_close").onclick = function () {
+document.getElementById("command_close").onclick = () => {
     [...document.getElementsByName("tab_id")]
         .filter(tab_id_checkbox => tab_id_checkbox.checked)
         .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
 };
-document.getElementById("departure").onclick = function () {
+document.getElementById("departure").onclick = () => {
     const selected_tabs = [...document.getElementsByName("tab_id")]
         .filter(tab_id_checkbox => tab_id_checkbox.checked);
     if (selected_tabs.length) {
