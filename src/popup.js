@@ -65,7 +65,7 @@ document.getElementById("load_tabs").onclick = () => {
             arrowIcon.onclick = () => {
                 chrome.tabs.highlight({ tabs: tab.index });
             };
-            line.appendChild(arrowIcon)
+            line.appendChild(arrowIcon);
 
             tab_list.appendChild(line);
         });
