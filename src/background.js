@@ -5,11 +5,11 @@ chrome.tabs.onCreated.addListener(tab => {
     chrome.storage.local.set(tab_time);
 });
 
-chrome.tabs.onRemoved.addListener((tabId, removeInfo) => {
+chrome.tabs.onRemoved.addListener(tabId => {
     chrome.storage.local.remove("tab_" + tabId);
 });
 
-chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
     if (changeInfo.url) {
         const tab_time_key = "tab_" + tabId;
         const tab_time = {};
