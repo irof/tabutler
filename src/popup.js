@@ -12,7 +12,7 @@ document.getElementById("sweep").onclick = function () {
 };
 
 document.getElementById("orderly").onclick = function () {
-    chrome.tabs.query({ pinned: false }, tabs => {
+    chrome.tabs.query({ pinned: false, currentWindow: true }, tabs => {
         const indexes = tabs.map(tab => tab.index);
         tabs.sort((a, b) => a.url >= b.url ? 1 : -1);
         const numberOfTabs = tabs.length;
@@ -33,7 +33,7 @@ document.getElementById("merge").onclick = function () {
 };
 
 document.getElementById("load_tabs").onclick = () => {
-    chrome.tabs.query({ pinned: false }, tabs => {
+    chrome.tabs.query({ pinned: false, currentWindow: true }, tabs => {
         const tab_list = document.getElementById("tab_list");
         [...tab_list.children].forEach(child => child.remove());
         tabs.forEach(tab => {
@@ -59,6 +59,16 @@ document.getElementById("command_close").onclick = function () {
     [...document.getElementsByName("tab_id")]
         .filter(tab_id_checkbox => tab_id_checkbox.checked)
         .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
+};
+
+document.getElementById("departure").onclick = function () {
+    chrome.windows.create({}, new_window => {
+        [...document.getElementsByName("tab_id")]
+            .filter(tab_id_checkbox => tab_id_checkbox.checked)
+            .forEach(tab_id_checkbox => {
+                chrome.tabs.move(parseInt(tab_id_checkbox.value), { windowId: new_window.id, index: -1 });
+            });
+    });
 };
 
 document.getElementById("remove-parent-and-child").onclick = function () {
@@ -100,4 +110,3 @@ document.getElementById("remove-parent-and-child").onclick = function () {
         removeChildren(id);
     });
 };
-
