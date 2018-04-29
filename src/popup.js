@@ -78,11 +78,14 @@ document.getElementById("command_close").onclick = function () {
         .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
 };
 document.getElementById("departure").onclick = function () {
-    chrome.windows.create({}, new_window => {
-        [...document.getElementsByName("tab_id")]
-            .filter(tab_id_checkbox => tab_id_checkbox.checked)
-            .forEach(tab_id_checkbox => {
+    const selected_tabs = [...document.getElementsByName("tab_id")]
+        .filter(tab_id_checkbox => tab_id_checkbox.checked);
+    if (selected_tabs.length) {
+        chrome.windows.create({}, new_window => {
+            selected_tabs.forEach(tab_id_checkbox => {
                 chrome.tabs.move(parseInt(tab_id_checkbox.value), { windowId: new_window.id, index: -1 });
             });
-    });
+            chrome.tabs.remove(new_window.tabs[0].id);
+        });
+    }
 };
