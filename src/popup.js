@@ -128,3 +128,41 @@ document.getElementById("departure").onclick = () => {
         });
     }
 };
+
+document.getElementById("remove_family").onclick = () => {
+
+    const tabMap = new Map();
+    const childrenMap = new Map();
+
+    const removeChildren = id => {
+        chrome.tabs.remove(id);
+        let children = childrenMap.get(id);
+        if (children) {
+            children.forEach(childId => removeChildren(childId));
+        }
+    };
+
+    chrome.tabs.query({}, tabs => {
+        tabs.forEach(tab => {
+            tabMap.set(tab.id, tab.openerTabId);
+            let children = childrenMap.get(tab.openerTabId);
+            if (!children) {
+                children = new Array();
+                childrenMap.set(tab.openerTabId, children);
+            }
+            children.push(tab.id);
+        });
+    });
+
+    chrome.tabs.query({"active": true}, tabs => {
+        let id = tabs[0].id;
+        while(id) {
+            let openerId = tabMap.get(id);
+            if (!openerId) {
+                break;
+            }
+            id = openerId;
+        }
+        removeChildren(id);
+    });
+};
