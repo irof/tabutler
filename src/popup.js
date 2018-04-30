@@ -34,8 +34,8 @@ document.getElementById("merge").onclick = () => {
 
 function groupByDomain(tabs) {
     function extractKey(url) {
-        if (!url || !url.startsWith('http')) return "その他";
-        return url.split('/')[2];
+        if (!url || !url.startsWith("http")) return "その他";
+        return url.split("/")[2];
     }
 
     return tabs.reduce((acc, tab) => {
@@ -55,14 +55,25 @@ document.getElementById("load_tabs").onclick = () => {
 
         for (const domain in groupedTabs) {
             if (groupedTabs.hasOwnProperty(domain)) {
+                const currentTabs = groupedTabs[domain];
+
                 const domainLine = document.createElement("li");
-                domainLine.appendChild(document.createTextNode(domain));
+                const domainLabel = document.createElement("b");
+                domainLabel.appendChild(document.createTextNode(domain));
+                domainLine.appendChild(domainLabel);
+
+                domainLabel.onclick = () => {
+                    currentTabs.forEach(tab => {
+                        const checkbox = document.getElementById("tabid_" + tab.id);
+                        checkbox.checked = !checkbox.checked;
+                    });
+                };
 
                 const tabList = document.createElement("ul");
                 domainLine.appendChild(tabList);
                 tab_list.appendChild(domainLine);
 
-                groupedTabs[domain].forEach(tab => {
+                currentTabs.forEach(tab => {
                     const line = document.createElement("li");
 
                     const checkbox = document.createElement("input");
