@@ -154,7 +154,7 @@ document.getElementById("remove_family").onclick = () => {
         });
     });
 
-    chrome.tabs.query({"active": true}, tabs => {
+    chrome.tabs.query({"active": true, currentWindow: true}, tabs => {
         let id = tabs[0].id;
         while(id) {
             let openerId = tabMap.get(id);
