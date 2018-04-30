@@ -90,7 +90,7 @@ document.getElementById("departure").onclick = () => {
     }
 };
 
-document.getElementById("remove-parent-and-child").onclick = () => {
+document.getElementById("remove_family").onclick = () => {
 
     const tabMap = new Map();
     const childrenMap = new Map();
@@ -99,9 +99,7 @@ document.getElementById("remove-parent-and-child").onclick = () => {
         chrome.tabs.remove(id);
         let children = childrenMap.get(id);
         if (children) {
-            children.forEach(childId => {
-                removeChildren(childId);
-            });
+            children.forEach(childId => removeChildren(childId));
         }
     };
 
