@@ -7,7 +7,3 @@ gulp.task('default', () => {
     .pipe(eslint.format());
 });
 
-gulp.task('test', () => {
-  console.log('NOTHING TO DO');
-});
-
