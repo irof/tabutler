@@ -84,10 +84,10 @@ document.getElementById("departure").onclick = function () {
 
 document.getElementById("remove-parent-and-child").onclick = function () {
 
-    var tabMap = new Map();
-    var childrenMap = new Map();
+    const tabMap = new Map();
+    const childrenMap = new Map();
 
-    var removeChildren = function(id) {
+    const removeChildren = function(id) {
         chrome.tabs.remove(id);
         let children = childrenMap.get(id);
         if (children) {
