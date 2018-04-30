@@ -90,12 +90,12 @@ document.getElementById("departure").onclick = () => {
     }
 };
 
-document.getElementById("remove-parent-and-child").onclick = function () {
+document.getElementById("remove-parent-and-child").onclick = () => {
 
     const tabMap = new Map();
     const childrenMap = new Map();
 
-    const removeChildren = function(id) {
+    const removeChildren = id => {
         chrome.tabs.remove(id);
         let children = childrenMap.get(id);
         if (children) {
@@ -105,7 +105,7 @@ document.getElementById("remove-parent-and-child").onclick = function () {
         }
     };
 
-    chrome.tabs.query({}, function(tabs) {
+    chrome.tabs.query({}, tabs => {
         tabs.forEach(tab => {
             tabMap.set(tab.id, tab.openerTabId);
             let children = childrenMap.get(tab.openerTabId);
@@ -117,7 +117,7 @@ document.getElementById("remove-parent-and-child").onclick = function () {
         });
     });
 
-    chrome.tabs.query({"active": true}, function(tabs) {
+    chrome.tabs.query({"active": true}, tabs => {
         let id = tabs[0].id;
         while(id) {
             let openerId = tabMap.get(id);
