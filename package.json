@@ -1,7 +1,8 @@
 {
   "devDependencies": {
     "gulp": "^3.9.1",
-    "gulp-eslint": "^4.0.2"
+    "gulp-eslint": "^4.0.2",
+    "jest": "^22.4.3"
   },
   "name": "tabutler",
   "description": "Tabutler =================",
@@ -9,7 +10,7 @@
   "main": "gulpfile.js",
   "dependencies": {},
   "scripts": {
-    "test": "gulp test"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
