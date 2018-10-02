@@ -53,7 +53,11 @@ document.getElementById("load_tabs").onclick = () => {
 
         function appendRow(...args) {
             const row = document.createElement("tr");
-            args.forEach(creator => row.appendChild(creator()));
+            args.forEach(creator => {
+                const column = document.createElement("td");
+                creator(column);
+                row.appendChild(column);
+            });
             tab_list.appendChild(row);
         }
 
@@ -62,8 +66,7 @@ document.getElementById("load_tabs").onclick = () => {
             if (groupedTabs.hasOwnProperty(domain)) {
                 const currentTabs = groupedTabs[domain];
 
-                appendRow(() => {
-                    const domainColumn = document.createElement("th");
+                appendRow((domainColumn) => {
                     domainColumn.colSpan = 4;
                     domainColumn.appendChild(document.createTextNode(domain));
                     domainColumn.onclick = () => {
@@ -72,22 +75,17 @@ document.getElementById("load_tabs").onclick = () => {
                             checkbox.checked = !checkbox.checked;
                         });
                     };
-                    return domainColumn;
                 });
 
                 currentTabs.forEach(tab => {
-
-                    appendRow(() => {
-                        const checkboxColumn = document.createElement("td");
+                    appendRow((checkboxColumn) => {
                         const checkbox = document.createElement("input");
                         checkbox.type = "checkbox";
                         checkbox.name = "tab_id";
                         checkbox.value = tab.id;
                         checkbox.id = "tabid_" + tab.id;
                         checkboxColumn.appendChild(checkbox);
-                        return checkboxColumn;
-                    }, () => {
-                        const favIconColumn = document.createElement("td");
+                    }, (favIconColumn) => {
                         if (tab.favIconUrl) {
                             const favIconImg = document.createElement("img");
                             favIconImg.src = tab.favIconUrl;
@@ -95,22 +93,18 @@ document.getElementById("load_tabs").onclick = () => {
                             favIconImg.height = 16;
                             favIconColumn.appendChild(favIconImg);
                         }
-                        return favIconColumn;
-                    }, () => {
-                        const titleColumn = document.createElement("td");
+                    }, (titleColumn) => {
                         titleColumn.appendChild(document.createTextNode(tab.title));
-                        return titleColumn;
-                    }, () => {
-                        const controlColumn = document.createElement("td");
+                    }, (controlColumn) => {
                         controlColumn.className = "control-column";
-    
+
                         const openButton = document.createElement("i");
                         openButton.className = "fas fa-arrow-circle-right";
                         openButton.onclick = () => {
                             chrome.tabs.highlight({ tabs: tab.index });
                         };
                         controlColumn.appendChild(openButton);
-    
+
                         const closeButton = document.createElement("i");
                         closeButton.className = "far fa-window-close";
                         closeButton.onclick = () => {
@@ -119,7 +113,6 @@ document.getElementById("load_tabs").onclick = () => {
                             });
                         };
                         controlColumn.appendChild(closeButton);
-                        return controlColumn;
                     });
                 });
             }
