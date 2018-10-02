@@ -52,23 +52,29 @@ document.getElementById("load_tabs").onclick = () => {
         [...tab_list.children].forEach(child => child.remove());
 
         const groupedTabs = groupByDomain(tabs);
+        function appendRow(columnCreator) {
+            const row = document.createElement("tr");
+            const column = columnCreator()
+            row.appendChild(column);
+            tab_list.appendChild(row);
+        }
 
         for (const domain in groupedTabs) {
             if (groupedTabs.hasOwnProperty(domain)) {
                 const currentTabs = groupedTabs[domain];
 
-                const domainLine = document.createElement("tr");
-                const domainColumn = document.createElement("th");
-                domainColumn.colSpan = 4;
-                domainColumn.appendChild(document.createTextNode(domain));
-                domainColumn.onclick = () => {
-                    currentTabs.forEach(tab => {
-                        const checkbox = document.getElementById("tabid_" + tab.id);
-                        checkbox.checked = !checkbox.checked;
-                    });
-                };
-                domainLine.appendChild(domainColumn);
-                tab_list.appendChild(domainLine);
+                appendRow(() => {
+                    const domainColumn = document.createElement("th");
+                    domainColumn.colSpan = 4;
+                    domainColumn.appendChild(document.createTextNode(domain));
+                    domainColumn.onclick = () => {
+                        currentTabs.forEach(tab => {
+                            const checkbox = document.getElementById("tabid_" + tab.id);
+                            checkbox.checked = !checkbox.checked;
+                        });
+                    };
+                    return domainColumn;
+                });
 
                 currentTabs.forEach(tab => {
                     const line = document.createElement("tr");
