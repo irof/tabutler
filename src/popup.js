@@ -118,11 +118,6 @@ document.getElementById("load_tabs").onclick = () => {
     });
 };
 
-document.getElementById("command_close").onclick = () => {
-    [...document.getElementsByName("tab_id")]
-        .filter(tab_id_checkbox => tab_id_checkbox.checked)
-        .forEach(tab_id_checkbox => chrome.tabs.remove(parseInt(tab_id_checkbox.value)));
-};
 document.getElementById("departure").onclick = () => {
     const selected_tabs = [...document.getElementsByName("tab_id")]
         .filter(tab_id_checkbox => tab_id_checkbox.checked);
