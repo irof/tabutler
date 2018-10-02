@@ -55,7 +55,7 @@ document.getElementById("load_tabs").onclick = () => {
             const row = document.createElement("tr");
             args.forEach(creator => {
                 const column = document.createElement("td");
-                creator(column);
+                creator(column, row);
                 row.appendChild(column);
             });
             tab_list.appendChild(row);
@@ -96,7 +96,7 @@ document.getElementById("load_tabs").onclick = () => {
                         }
                     }, (titleColumn) => {
                         titleColumn.appendChild(document.createTextNode(tab.title));
-                    }, (controlColumn) => {
+                    }, (controlColumn, row) => {
                         controlColumn.className = "control-column";
 
                         const openButton = document.createElement("i");
@@ -110,7 +110,7 @@ document.getElementById("load_tabs").onclick = () => {
                         closeButton.className = "far fa-window-close";
                         closeButton.onclick = () => {
                             chrome.tabs.remove(tab.id, () => {
-                                line.remove();
+                                row.remove();
                             });
                         };
                         controlColumn.appendChild(closeButton);
