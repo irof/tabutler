@@ -100,7 +100,7 @@ document.getElementById("load_tabs").onclick = () => {
                     line.appendChild(titleColumn);
 
                     const controlColumn = document.createElement("td");
-                    controlColumn.style = "white-space: nowrap; letter-spacing: 1em;";
+                    controlColumn.className = "control-column";
 
                     const openButton = document.createElement("i");
                     openButton.className = "fas fa-arrow-circle-right";
