@@ -67,6 +67,7 @@ document.getElementById("load_tabs").onclick = () => {
                 const currentTabs = groupedTabs[domain];
 
                 appendRow((domainColumn) => {
+                    domainColumn.className = "row-domain"
                     domainColumn.colSpan = 4;
                     domainColumn.appendChild(document.createTextNode(domain));
                     domainColumn.onclick = () => {
