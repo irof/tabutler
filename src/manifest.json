@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Tabutler",
-  "version": "1.7.0",
+  "version": "1.8.0",
   "description": "sweep / order tabs",
   "icons": {
     "128": "icons/tabutler128.png"
