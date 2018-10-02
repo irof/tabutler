@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
-  </head>
-  <body style="width: 500px;">
-    <h1>タブの整理整頓</h1>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
+    crossorigin="anonymous">
+</head>
+
+<body style="width: 500px;">
+  <h1>タブの整理整頓</h1>
+  <div>
     <button id="sweep">重複を閉じる</button>
     <button id="orderly">URL順に並び替え</button>
     <button id="merge">1ウィンドウにまとめる</button>
     <button id="remove_family">親子タブをすべて閉じる</button>
-
-    <hr>
-
+  </div>
+  <div>
     <button id="load_tabs">タブ一覧を取得する</button>
+  </div>
+  <div>
     <button id="command_close">選択を閉じる</button>
     <button id="departure">選択を別ウィンドウに</button>
-
+  </div>
+  <div>
     <ul id="tab_list"></ul>
+  </div>
 
-    <script src="popup.js"></script>
-  </body>
+  <script src="popup.js"></script>
+</body>
+
 </html>
