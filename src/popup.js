@@ -112,7 +112,9 @@ document.getElementById("load_tabs").onclick = () => {
                     const closeButton = document.createElement("i");
                     closeButton.className = "far fa-window-close";
                     closeButton.onclick = () => {
-                        chrome.tabs.remove(tab.id);
+                        chrome.tabs.remove(tab.id, () => {
+                            line.remove();
+                        });
                     };
                     controlColumn.appendChild(closeButton);
 
