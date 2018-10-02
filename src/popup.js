@@ -32,21 +32,59 @@ document.getElementById("merge").onclick = () => {
     });
 };
 
-function groupByDomain(tabs) {
-    function extractKey(url) {
-        if (!url || !url.startsWith("http")) return "その他";
-        return url.split("/")[2];
+document.getElementById("departure").onclick = () => {
+    const selected_tabs = [...document.getElementsByName("tab_id")]
+        .filter(tab_id_checkbox => tab_id_checkbox.checked);
+    if (selected_tabs.length) {
+        chrome.windows.create({}, new_window => {
+            selected_tabs.forEach(tab_id_checkbox => {
+                chrome.tabs.move(parseInt(tab_id_checkbox.value), { windowId: new_window.id, index: -1 });
+            });
+            chrome.tabs.remove(new_window.tabs[0].id);
+        });
     }
+};
 
-    return tabs.reduce((acc, tab) => {
-        const key = extractKey(tab.url);
-        if (!acc[key]) acc[key] = [];
-        acc[key].push(tab);
-        return acc;
-    }, {});
-}
+document.getElementById("remove_family").onclick = () => {
 
-document.getElementById("load_tabs").onclick = () => {
+    const tabMap = new Map();
+    const childrenMap = new Map();
+
+    const removeChildren = id => {
+        chrome.tabs.remove(id);
+        let children = childrenMap.get(id);
+        if (children) {
+            children.forEach(childId => removeChildren(childId));
+        }
+    };
+
+    chrome.tabs.query({}, tabs => {
+        tabs.forEach(tab => {
+            tabMap.set(tab.id, tab.openerTabId);
+            let children = childrenMap.get(tab.openerTabId);
+            if (!children) {
+                children = new Array();
+                childrenMap.set(tab.openerTabId, children);
+            }
+            children.push(tab.id);
+        });
+    });
+
+    chrome.tabs.query({ "active": true, currentWindow: true }, tabs => {
+        let id = tabs[0].id;
+        while (id) {
+            let openerId = tabMap.get(id);
+            if (!openerId) {
+                break;
+            }
+            id = openerId;
+        }
+        removeChildren(id);
+    });
+};
+
+
+function loadTabs() {
     chrome.tabs.query({ pinned: false, currentWindow: true }, tabs => {
         const tab_list = document.getElementById("tab_list");
         [...tab_list.children].forEach(child => child.remove());
@@ -61,13 +99,27 @@ document.getElementById("load_tabs").onclick = () => {
             tab_list.appendChild(row);
         }
 
+        function groupByDomain(tabs) {
+            function extractKey(url) {
+                if (!url || !url.startsWith("http")) return "その他";
+                return url.split("/")[2];
+            }
+
+            return tabs.reduce((acc, tab) => {
+                const key = extractKey(tab.url);
+                if (!acc[key]) acc[key] = [];
+                acc[key].push(tab);
+                return acc;
+            }, {});
+        }
+
         const groupedTabs = groupByDomain(tabs);
         for (const domain in groupedTabs) {
             if (groupedTabs.hasOwnProperty(domain)) {
                 const currentTabs = groupedTabs[domain];
 
                 appendRow((domainColumn) => {
-                    domainColumn.className = "row-domain"
+                    domainColumn.className = "row-domain";
                     domainColumn.colSpan = 4;
                     domainColumn.appendChild(document.createTextNode(domain));
                     domainColumn.onclick = () => {
@@ -119,55 +171,6 @@ document.getElementById("load_tabs").onclick = () => {
             }
         }
     });
-};
+}
 
-document.getElementById("departure").onclick = () => {
-    const selected_tabs = [...document.getElementsByName("tab_id")]
-        .filter(tab_id_checkbox => tab_id_checkbox.checked);
-    if (selected_tabs.length) {
-        chrome.windows.create({}, new_window => {
-            selected_tabs.forEach(tab_id_checkbox => {
-                chrome.tabs.move(parseInt(tab_id_checkbox.value), { windowId: new_window.id, index: -1 });
-            });
-            chrome.tabs.remove(new_window.tabs[0].id);
-        });
-    }
-};
-
-document.getElementById("remove_family").onclick = () => {
-
-    const tabMap = new Map();
-    const childrenMap = new Map();
-
-    const removeChildren = id => {
-        chrome.tabs.remove(id);
-        let children = childrenMap.get(id);
-        if (children) {
-            children.forEach(childId => removeChildren(childId));
-        }
-    };
-
-    chrome.tabs.query({}, tabs => {
-        tabs.forEach(tab => {
-            tabMap.set(tab.id, tab.openerTabId);
-            let children = childrenMap.get(tab.openerTabId);
-            if (!children) {
-                children = new Array();
-                childrenMap.set(tab.openerTabId, children);
-            }
-            children.push(tab.id);
-        });
-    });
-
-    chrome.tabs.query({ "active": true, currentWindow: true }, tabs => {
-        let id = tabs[0].id;
-        while (id) {
-            let openerId = tabMap.get(id);
-            if (!openerId) {
-                break;
-            }
-            id = openerId;
-        }
-        removeChildren(id);
-    });
-};
+loadTabs();
