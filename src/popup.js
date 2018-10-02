@@ -57,61 +57,68 @@ document.getElementById("load_tabs").onclick = () => {
             if (groupedTabs.hasOwnProperty(domain)) {
                 const currentTabs = groupedTabs[domain];
 
-                const domainLine = document.createElement("li");
-                const domainLabel = document.createElement("b");
-                domainLabel.appendChild(document.createTextNode(domain));
-                domainLine.appendChild(domainLabel);
-
-                domainLabel.onclick = () => {
+                const domainLine = document.createElement("tr");
+                const domainColumn = document.createElement("th");
+                domainColumn.colSpan = 4;
+                domainColumn.appendChild(document.createTextNode(domain));
+                domainColumn.onclick = () => {
                     currentTabs.forEach(tab => {
                         const checkbox = document.getElementById("tabid_" + tab.id);
                         checkbox.checked = !checkbox.checked;
                     });
                 };
-
-                const tabList = document.createElement("ul");
-                domainLine.appendChild(tabList);
+                domainLine.appendChild(domainColumn);
                 tab_list.appendChild(domainLine);
 
                 currentTabs.forEach(tab => {
-                    const line = document.createElement("li");
+                    const line = document.createElement("tr");
 
+                    const checkboxColumn = document.createElement("td");
                     const checkbox = document.createElement("input");
                     checkbox.type = "checkbox";
                     checkbox.name = "tab_id";
                     checkbox.value = tab.id;
                     checkbox.id = "tabid_" + tab.id;
-                    line.appendChild(checkbox);
+                    checkboxColumn.appendChild(checkbox);
+                    line.appendChild(checkboxColumn);
 
-                    const label = document.createElement("label");
-                    label.htmlFor = checkbox.id;
+                    const favIconColumn = document.createElement("td");
                     if (tab.favIconUrl) {
                         const favIconImg = document.createElement("img");
                         favIconImg.src = tab.favIconUrl;
                         favIconImg.width = 16;
                         favIconImg.height = 16;
-                        label.appendChild(favIconImg);
+                        favIconColumn.appendChild(favIconImg);
                     }
-                    const labelText = document.createElement("span");
-                    labelText.appendChild(document.createTextNode(tab.title));
-                    label.appendChild(labelText);
-                    line.appendChild(label);
+                    line.appendChild(favIconColumn);
 
-                    const arrowIcon = document.createElement("i");
-                    arrowIcon.className = "fas fa-arrow-circle-right";
-                    arrowIcon.onclick = () => {
+                    const titleColumn = document.createElement("td");
+                    const label = document.createElement("label");
+                    label.htmlFor = checkbox.id;
+                    label.appendChild(document.createTextNode(tab.title));
+                    titleColumn.appendChild(label);
+                    line.appendChild(titleColumn);
+
+                    const controlColumn = document.createElement("td");
+                    controlColumn.style = "white-space: nowrap; letter-spacing: 1em;";
+
+                    const openButton = document.createElement("i");
+                    openButton.className = "fas fa-arrow-circle-right";
+                    openButton.onclick = () => {
                         chrome.tabs.highlight({ tabs: tab.index });
                     };
-                    line.appendChild(arrowIcon);
+                    controlColumn.appendChild(openButton);
 
                     const closeButton = document.createElement("i");
-                    closeButton.className = "fas fa-times";
+                    closeButton.className = "far fa-window-close";
                     closeButton.onclick = () => {
                         chrome.tabs.remove(tab.id);
                     };
-                    line.appendChild(closeButton);
+                    controlColumn.appendChild(closeButton);
 
-                    tabList.appendChild(line);
+                    line.appendChild(controlColumn);
+
+                    tab_list.appendChild(line);
                 });
             }
         }
