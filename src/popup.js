@@ -104,6 +104,13 @@ document.getElementById("load_tabs").onclick = () => {
                     };
                     line.appendChild(arrowIcon);
 
+                    const closeButton = document.createElement("i");
+                    closeButton.className = "fas fa-times";
+                    closeButton.onclick = () => {
+                        chrome.tabs.remove(tab.id);
+                    };
+                    line.appendChild(closeButton);
+
                     tabList.appendChild(line);
                 });
             }
@@ -154,9 +161,9 @@ document.getElementById("remove_family").onclick = () => {
         });
     });
 
-    chrome.tabs.query({"active": true, currentWindow: true}, tabs => {
+    chrome.tabs.query({ "active": true, currentWindow: true }, tabs => {
         let id = tabs[0].id;
-        while(id) {
+        while (id) {
             let openerId = tabMap.get(id);
             if (!openerId) {
                 break;
