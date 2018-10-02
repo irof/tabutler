@@ -51,14 +51,13 @@ document.getElementById("load_tabs").onclick = () => {
         const tab_list = document.getElementById("tab_list");
         [...tab_list.children].forEach(child => child.remove());
 
-        const groupedTabs = groupByDomain(tabs);
-        function appendRow(columnCreator) {
+        function appendRow(...args) {
             const row = document.createElement("tr");
-            const column = columnCreator()
-            row.appendChild(column);
+            args.forEach(creator => row.appendChild(creator()));
             tab_list.appendChild(row);
         }
 
+        const groupedTabs = groupByDomain(tabs);
         for (const domain in groupedTabs) {
             if (groupedTabs.hasOwnProperty(domain)) {
                 const currentTabs = groupedTabs[domain];
@@ -77,56 +76,51 @@ document.getElementById("load_tabs").onclick = () => {
                 });
 
                 currentTabs.forEach(tab => {
-                    const line = document.createElement("tr");
 
-                    const checkboxColumn = document.createElement("td");
-                    const checkbox = document.createElement("input");
-                    checkbox.type = "checkbox";
-                    checkbox.name = "tab_id";
-                    checkbox.value = tab.id;
-                    checkbox.id = "tabid_" + tab.id;
-                    checkboxColumn.appendChild(checkbox);
-                    line.appendChild(checkboxColumn);
-
-                    const favIconColumn = document.createElement("td");
-                    if (tab.favIconUrl) {
-                        const favIconImg = document.createElement("img");
-                        favIconImg.src = tab.favIconUrl;
-                        favIconImg.width = 16;
-                        favIconImg.height = 16;
-                        favIconColumn.appendChild(favIconImg);
-                    }
-                    line.appendChild(favIconColumn);
-
-                    const titleColumn = document.createElement("td");
-                    const label = document.createElement("label");
-                    label.htmlFor = checkbox.id;
-                    label.appendChild(document.createTextNode(tab.title));
-                    titleColumn.appendChild(label);
-                    line.appendChild(titleColumn);
-
-                    const controlColumn = document.createElement("td");
-                    controlColumn.className = "control-column";
-
-                    const openButton = document.createElement("i");
-                    openButton.className = "fas fa-arrow-circle-right";
-                    openButton.onclick = () => {
-                        chrome.tabs.highlight({ tabs: tab.index });
-                    };
-                    controlColumn.appendChild(openButton);
-
-                    const closeButton = document.createElement("i");
-                    closeButton.className = "far fa-window-close";
-                    closeButton.onclick = () => {
-                        chrome.tabs.remove(tab.id, () => {
-                            line.remove();
-                        });
-                    };
-                    controlColumn.appendChild(closeButton);
-
-                    line.appendChild(controlColumn);
-
-                    tab_list.appendChild(line);
+                    appendRow(() => {
+                        const checkboxColumn = document.createElement("td");
+                        const checkbox = document.createElement("input");
+                        checkbox.type = "checkbox";
+                        checkbox.name = "tab_id";
+                        checkbox.value = tab.id;
+                        checkbox.id = "tabid_" + tab.id;
+                        checkboxColumn.appendChild(checkbox);
+                        return checkboxColumn;
+                    }, () => {
+                        const favIconColumn = document.createElement("td");
+                        if (tab.favIconUrl) {
+                            const favIconImg = document.createElement("img");
+                            favIconImg.src = tab.favIconUrl;
+                            favIconImg.width = 16;
+                            favIconImg.height = 16;
+                            favIconColumn.appendChild(favIconImg);
+                        }
+                        return favIconColumn;
+                    }, () => {
+                        const titleColumn = document.createElement("td");
+                        titleColumn.appendChild(document.createTextNode(tab.title));
+                        return titleColumn;
+                    }, () => {
+                        const controlColumn = document.createElement("td");
+                        controlColumn.className = "control-column";
+    
+                        const openButton = document.createElement("i");
+                        openButton.className = "fas fa-arrow-circle-right";
+                        openButton.onclick = () => {
+                            chrome.tabs.highlight({ tabs: tab.index });
+                        };
+                        controlColumn.appendChild(openButton);
+    
+                        const closeButton = document.createElement("i");
+                        closeButton.className = "far fa-window-close";
+                        closeButton.onclick = () => {
+                            chrome.tabs.remove(tab.id, () => {
+                                line.remove();
+                            });
+                        };
+                        controlColumn.appendChild(closeButton);
+                        return controlColumn;
+                    });
                 });
             }
         }
