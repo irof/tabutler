@@ -1,13 +1,10 @@
 {
   "devDependencies": {
-    "gulp": "^5.0.0",
-    "gulp-eslint": "^6.0.0",
     "jest": "^29.7.0"
   },
   "name": "tabutler",
-  "description": "Tabutler =================",
-  "version": "1.8.0",
-  "main": "gulpfile.js",
+  "description": "Tabutler",
+  "version": "2.0.0",
   "dependencies": {},
   "scripts": {
     "test": "jest"
