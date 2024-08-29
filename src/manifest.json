@@ -1,13 +1,16 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Tabutler",
-  "version": "1.8.0",
+  "version": "2.0.0",
   "description": "sweep / order tabs",
   "icons": {
     "128": "icons/tabutler128.png"
   },
-  "browser_action": {
+  "action": {
     "default_popup": "popup.html"
   },
-  "permissions": ["tabs"]
+  "permissions": [
+    "tabs",
+    "tabGroups"
+  ]
 }
