@@ -2,17 +2,30 @@
 <html>
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="./popup.css" />
-  <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./popup.css"/>
+    <link rel="stylesheet" href="./fontawesome/css/all.min.css">
 </head>
 
 <body>
-  <button id="grouping">グルーピング</button>
-  <button id="sweep">掃除</button>
-  <button id="sort">並び替え</button>
+<button id="grouping">グルーピング</button>
+<button id="sweep">掃除</button>
+<button id="sort">並び替え</button>
 
-  <script src="./popup.js" type="module"></script>
+<details id="sweep_history" open>
+    <summary>掃除履歴</summary>
+    <template id="swept_template">
+        <div>
+            <h2>dummy</h2>
+            <ul>
+                <li><a href="about:blank">dummy</a></li>
+            </ul>
+        </div>
+    </template>
+</details>
+<button id="clear_sweep_history">掃除履歴削除</button>
+
+<script src="./popup.js" type="module"></script>
 </body>
 
 </html>
