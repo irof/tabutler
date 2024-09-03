@@ -3,38 +3,16 @@
 
 <head>
   <meta charset="UTF-8">
+  <link rel="stylesheet" href="./popup.css" />
   <link rel="stylesheet" href="./fontawesome/css/all.min.css">
-  <style type="text/css">
-    .control-column {
-      white-space: nowrap;
-      letter-spacing: 1em;
-    }
-    .row-domain {
-      font-weight: bold;
-      background-color: lightblue;
-    }
-    .control-column i, .row-domain {
-      cursor: pointer;
-    }
-  </style>
 </head>
 
-<body style="width: 500px;">
-  <h1>タブの整理整頓</h1>
-  <div>
-    <button id="sweep">重複を閉じる</button>
-    <button id="orderly">URL順に並び替え</button>
-    <button id="merge">1ウィンドウにまとめる</button>
-    <button id="remove_family">親子タブをすべて閉じる</button>
-  </div>
-  <div>
-    <button id="departure">選択を別ウィンドウに</button>
-  </div>
-  <div>
-    <table id="tab_list"></table>
-  </div>
+<body>
+  <button id="grouping">グルーピング</button>
+  <button id="sweep">掃除</button>
+  <button id="sort">並び替え</button>
 
-  <script src="popup.js"></script>
+  <script src="./popup.js" type="module"></script>
 </body>
 
 </html>

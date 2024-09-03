@@ -1,0 +1,9 @@
+body {
+    width: 50em;
+}
+
+button {
+    border-radius: 0.5em;
+    padding: 0.5em 1.5em;
+    text-align: center;
+}
