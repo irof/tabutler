@@ -30,3 +30,19 @@ textarea.warning {
     background-color: #f1dada;
     color: #000;
 }
+
+pre.code {
+    overflow-x: auto;
+    background: #f8f8f8;
+    border-radius: 1em;
+    border: 1px solid #ddd;
+    font-family: monospace;
+    color: #333;
+    line-height: 1.6;
+}
+
+details {
+    border: 1px solid #ddd;
+    padding: 1em;
+    margin-top: 1em;
+}

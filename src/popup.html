@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <link rel="stylesheet" href="./popup.css"/>
     <link rel="stylesheet" href="./fontawesome/css/all.min.css">
+    <title>Tabutler</title>
 </head>
 
 <body>
@@ -18,26 +19,69 @@
     <button id="collapse">全てのグループを折りたたむ</button>
 </div>
 
-<details open>
-    <label for="grouping_rule_description">グルーピングルール</label>
+<details>
+    <summary>グルーピング設定</summary>
+    <label for="grouping_rule_description">グルーピングルール</label><br>
     <textarea id="grouping_rule_description" cols="40" rows="10"></textarea>
-    <button id="grouping_rule_save">保存</button>
+    <button id="grouping_rule_save" disabled>保存</button>
+    <h4>ルール記述例:</h4>
+    <pre class="code">
+[
+  {
+    "title": "検索結果",
+    "urlPatterns": [
+      "https://www.google.com/*",
+      "https://www.google.co.jp/*"
+    ]
+  }
+]
+    </pre>
+    <ul>
+        <li>urlPatternsは <a href="https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns?hl=ja">一致パターン</a>で書きます。
+        </li>
+        <li>保存したものは次にこの画面を開いた際に復元されます。</li>
+        <li>グルーピングは保存していなくても入力内容で行われます。</li>
+        <li>JSON出ないもの、titleやurlPatternsのないものはエラーになりグルーピングや保存は実行できません。</li>
+    </ul>
+</details>
+<details open>
+    <summary>掃除設定</summary>
+
+    <ul>
+        <li>
+            <input type="checkbox" id="sweepBlank" checked>
+            <label for="sweepBlank">空ページを閉じる</label>
+        </li>
+        <li>
+            <input type="checkbox" id="sweepDuplicate" checked>
+            <label for="sweepDuplicate">URLが同じタブを閉じる</label>
+        </li>
+        <li>
+            <input type="checkbox" id="sweepIgnoreHash" checked>
+            <label for="sweepIgnoreHash">#hash が異なるものも同一とみなす</label>
+        </li>
+        <li>
+            <input type="checkbox" id="sweepIgnoreQuery" checked>
+            <label for="sweepIgnoreQuery">?query が異なるものも同一とみなす</label>
+        </li>
+    </ul>
+
+    <div>
+        <button id="sweep_history_update">掃除履歴表示</button>
+        <button id="sweep_history_clear">掃除履歴クリア</button>
+
+        <template id="swept_template">
+            <div>
+                <h2>dummy</h2>
+                <ul>
+                    <li><a href="about:blank" target="_blank" title="dummy">dummy</a></li>
+                </ul>
+            </div>
+        </template>
+        <div id="sweep_history"></div>
+    </div>
 </details>
 
-<div>
-    <button id="sweep_history_update">掃除履歴更新</button>
-    <button id="sweep_history_clear">掃除履歴削除</button>
-
-    <template id="swept_template">
-        <div>
-            <h2>dummy</h2>
-            <ul>
-                <li><a href="about:blank">dummy</a></li>
-            </ul>
-        </div>
-    </template>
-    <div id="sweep_history"></div>
-</div>
 
 <script src="./popup.js" type="module"></script>
 </body>
