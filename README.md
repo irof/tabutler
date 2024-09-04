@@ -9,9 +9,17 @@ Chromeのタブの面倒を見てくれる子。
 - 掃除
 - 並び替え
 
-## ChromeWebStore
+## インストール
 
-https://chrome.google.com/webstore/detail/tabutler/kpnfbbdafaoamllppppckpnhpjafkhnh
+[ChromeWebStore](https://chrome.google.com/webstore/detail/tabutler/kpnfbbdafaoamllppppckpnhpjafkhnh) から。
+
+## Release
+
+```shell
+zip release.zip -r src
+```
+
+`release.zip` を [デベロッパーダッシュボード](https://chrome.google.com/webstore/devconsole/) からアップロードする。
 
 ## License
 
