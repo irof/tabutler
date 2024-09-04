@@ -12,12 +12,39 @@
 <div class="main">
     <button id="grouping">グルーピング</button>
     <button id="sweep">掃除</button>
-    <button id="sort">並び替え</button>
+    <button id="sort" title="タブをURL順で並び替えます。グループ化されたものはグループ内で並び替えます。">並び替え
+    </button>
 
 </div>
 <div class="sub">
     <button id="collapse">全てのグループを折りたたむ</button>
 </div>
+
+<details>
+    <summary>説明</summary>
+    <div>
+        <h1>グルーピング</h1>
+        「グルーピング設定」に従ってタブを自動的にグループ化します。
+    </div>
+    <div>
+        <h1>掃除</h1>
+        要らないタブを自動的に閉じます。
+        「要らないタブ」とは空のものや同じURLのものなどです。
+        何を要らないとするかは「掃除設定」で選びます。
+
+        <div>
+            <h2>掃除履歴</h2>
+            掃除されたタブを実施時刻、タイトルとともにリスト化します。
+            閉じたくなかったものはここから開き直せるかもしれません。
+        </div>
+    </div>
+
+    <div>
+        <h1>並び替え</h1>
+        URL順に並び替えます。
+        グループ化されたものはグループ内で並び替えます。
+    </div>
+</details>
 
 <details>
     <summary>グルーピング設定</summary>
@@ -40,8 +67,7 @@
         <li>urlPatternsは <a href="https://developer.chrome.com/docs/extensions/develop/concepts/match-patterns?hl=ja">一致パターン</a>で書きます。
         </li>
         <li>保存したものは次にこの画面を開いた際に復元されます。</li>
-        <li>グルーピングは保存していなくても入力内容で行われます。</li>
-        <li>JSON出ないもの、titleやurlPatternsのないものはエラーになりグルーピングや保存は実行できません。</li>
+        <li>不正なJSONはエラーになります。グルーピングや保存は実行できません。</li>
     </ul>
 </details>
 <details open>
@@ -55,14 +81,16 @@
         <li>
             <input type="checkbox" id="sweepDuplicate" checked>
             <label for="sweepDuplicate">URLが同じタブを閉じる</label>
-        </li>
-        <li>
-            <input type="checkbox" id="sweepIgnoreHash" checked>
-            <label for="sweepIgnoreHash">#hash が異なるものも同一とみなす</label>
-        </li>
-        <li>
-            <input type="checkbox" id="sweepIgnoreQuery" checked>
-            <label for="sweepIgnoreQuery">?query が異なるものも同一とみなす</label>
+            <ul>
+                <li>
+                    <input type="checkbox" id="sweepIgnoreHash" checked>
+                    <label for="sweepIgnoreHash">#hash が異なるものも同一とみなす</label>
+                </li>
+                <li>
+                    <input type="checkbox" id="sweepIgnoreQuery" checked>
+                    <label for="sweepIgnoreQuery">?query が異なるものも同一とみなす</label>
+                </li>
+            </ul>
         </li>
     </ul>
 

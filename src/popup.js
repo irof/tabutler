@@ -51,6 +51,31 @@ groupingRuleSaveButton.addEventListener("click", () => {
 });
 
 document.getElementById("sort").addEventListener("click", () => {
+    chrome.tabs.query({ pinned: false, currentWindow: true }, tabs => {
+        // tabsをgroupIdでグルーピングする
+        const groupedTabs = tabs.reduce((acc, tab) => {
+            const groupId = tab.groupId || chrome.tabGroups.TAB_GROUP_ID_NONE;
+            acc[groupId] ? acc[groupId].push(tab) : acc[groupId] = [tab];
+            return acc;
+        }, {});
+
+        Object.values(groupedTabs).forEach(tabs => {
+            const indexes = tabs.map(tab => tab.index);
+            tabs.sort((a, b) => a.url >= b.url ? 1 : -1);
+            const numberOfTabs = tabs.length;
+            for (let i = 0; i < numberOfTabs; i++) {
+                chrome.tabs.move(tabs[i].id, { index: indexes[i] });
+            }
+        });
+
+
+        // const indexes = tabs.map(tab => tab.index);
+        // tabs.sort((a, b) => a.url >= b.url ? 1 : -1);
+        // const numberOfTabs = tabs.length;
+        // for (let i = 0; i < numberOfTabs; i++) {
+        //     chrome.tabs.move(tabs[i].id, { index: indexes[i] });
+        // }
+    });
 });
 
 document.getElementById("grouping").addEventListener("click", async () => {
