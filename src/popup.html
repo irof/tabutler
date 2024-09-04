@@ -8,12 +8,26 @@
 </head>
 
 <body>
-<button id="grouping">グルーピング</button>
-<button id="sweep">掃除</button>
-<button id="sort">並び替え</button>
+<div class="main">
+    <button id="grouping">グルーピング</button>
+    <button id="sweep">掃除</button>
+    <button id="sort">並び替え</button>
 
-<details id="sweep_history" open>
-    <summary>掃除履歴</summary>
+</div>
+<div class="sub">
+    <button id="collapse">全てのグループを折りたたむ</button>
+</div>
+
+<details open>
+    <label for="grouping_rule_description">グルーピングルール</label>
+    <textarea id="grouping_rule_description" cols="40" rows="10"></textarea>
+    <button id="grouping_rule_save">保存</button>
+</details>
+
+<div>
+    <button id="sweep_history_update">掃除履歴更新</button>
+    <button id="sweep_history_clear">掃除履歴削除</button>
+
     <template id="swept_template">
         <div>
             <h2>dummy</h2>
@@ -22,8 +36,8 @@
             </ul>
         </div>
     </template>
-</details>
-<button id="clear_sweep_history">掃除履歴削除</button>
+    <div id="sweep_history"></div>
+</div>
 
 <script src="./popup.js" type="module"></script>
 </body>

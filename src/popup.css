@@ -2,8 +2,31 @@ body {
     width: 50em;
 }
 
-button {
+div {
+    margin-bottom: 0.5em;
+}
+
+.main button {
     border-radius: 0.5em;
     padding: 0.5em 1.5em;
     text-align: center;
+    background-color: #66F;
+    color: #FFF;
+}
+
+.sub button {
+    border-radius: 0.2em;
+    padding: 0.2em 1.0em;
+    background-color: #CCC;
+    color: #333;
+}
+
+button.warning {
+    background-color: red;
+    color: white;
+}
+
+textarea.warning {
+    background-color: #f1dada;
+    color: #000;
 }
